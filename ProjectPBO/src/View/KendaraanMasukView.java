@@ -3,6 +3,7 @@ package View;
 import Controller.KendaraanController;
 import Model.Kendaraan;
 import Panel.SidebarPanel;
+import Panel.HeaderPanel;
 import View.FormKendaraanView;
 
 import javax.swing.*;
@@ -40,9 +41,7 @@ public class KendaraanMasukView extends JFrame {
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        // =========================================
-        // MAIN PANEL
-        // =========================================
+        
         JPanel mainPanel = new JPanel(
                 new BorderLayout(20, 20)
         );
@@ -55,56 +54,9 @@ public class KendaraanMasukView extends JFrame {
                 new Color(240, 240, 240)
         );
 
-        // =========================================
-        // HEADER
-        // =========================================
-        JPanel header = new JPanel(
-                new BorderLayout()
-        );
+        
+        HeaderPanel header = new HeaderPanel("Data Parkir",username);
 
-        header.setPreferredSize(
-                new Dimension(1200, 70)
-        );
-
-        header.setBackground(
-                new Color(30, 30, 30)
-        );
-
-        header.setBorder(
-                new EmptyBorder(10, 20, 10, 20)
-        );
-
-        JLabel title = new JLabel(
-                "DATA KENDARAAN PARKIR"
-        );
-
-        title.setForeground(Color.WHITE);
-
-        title.setFont(
-                new Font("Arial",
-                        Font.BOLD,
-                        24)
-        );
-
-        JLabel adminLabel = new JLabel(
-                "Login sebagai : " + username
-        );
-
-        adminLabel.setForeground(Color.WHITE);
-
-        adminLabel.setFont(
-                new Font("Arial",
-                        Font.PLAIN,
-                        16)
-        );
-
-        header.add(title, BorderLayout.WEST);
-
-        header.add(adminLabel, BorderLayout.EAST);
-
-        // =========================================
-        // SIDEBAR
-        // =========================================
         SidebarPanel sidebar = new SidebarPanel();
 
         sidebar.getDashboardBtn().addActionListener(e -> {
@@ -133,18 +85,13 @@ public class KendaraanMasukView extends JFrame {
 
             new LoginView();
         });
-        // =========================================
-        // CENTER PANEL
-        // =========================================
+        
         JPanel centerPanel = new JPanel(
                 new BorderLayout(20, 20)
         );
 
         centerPanel.setOpaque(false);
 
-        // =========================================
-        // TOP PANEL
-        // =========================================
         JPanel topPanel = new JPanel(
                 new BorderLayout()
         );
@@ -190,9 +137,6 @@ public class KendaraanMasukView extends JFrame {
         topPanel.add(searchPanel,
                 BorderLayout.EAST);
 
-        // =========================================
-        // TABLE
-        // =========================================
         String[] column = {
             "ID",
             "Plat Nomor",
@@ -239,9 +183,6 @@ public class KendaraanMasukView extends JFrame {
                 )
         );
 
-        // =========================================
-        // BUTTON PANEL
-        // =========================================
         JPanel buttonPanel = new JPanel(
                 new FlowLayout(
                         FlowLayout.CENTER,
@@ -280,9 +221,6 @@ public class KendaraanMasukView extends JFrame {
 
         buttonPanel.add(btnSelesai);
 
-        // =========================================
-        // ADD CENTER PANEL
-        // =========================================
         centerPanel.add(topPanel,
                 BorderLayout.NORTH);
 
@@ -292,9 +230,6 @@ public class KendaraanMasukView extends JFrame {
         centerPanel.add(buttonPanel,
                 BorderLayout.SOUTH);
 
-        // =========================================
-        // ADD MAIN PANEL
-        // =========================================
         mainPanel.add(header,
                 BorderLayout.NORTH);
 
@@ -306,17 +241,12 @@ public class KendaraanMasukView extends JFrame {
 
         add(mainPanel);
 
-        // =========================================
-        // ACTION BUTTON
-        // =========================================
-        // TAMBAH
         btnTambah.addActionListener(e -> {
 
             new FormKendaraanView(this,
                     "Tambah");
         });
 
-        // EDIT
         btnEdit.addActionListener(e -> {
 
             int row = table.getSelectedRow();
@@ -347,7 +277,6 @@ public class KendaraanMasukView extends JFrame {
             }
         });
 
-        // HAPUS
         btnHapus.addActionListener(e -> {
 
             int row = table.getSelectedRow();
@@ -388,7 +317,6 @@ public class KendaraanMasukView extends JFrame {
             }
         });
 
-        // CARI
         btnCari.addActionListener(e -> {
 
             String keyword
@@ -397,7 +325,6 @@ public class KendaraanMasukView extends JFrame {
             loadTableSearch(keyword);
         });
 
-        // SELESAI
         btnSelesai.addActionListener(e -> {
 
             int row = table.getSelectedRow();
@@ -408,7 +335,7 @@ public class KendaraanMasukView extends JFrame {
             }
 
             int id = Integer.parseInt(table.getValueAt(row, 0).toString());
-            String tarif = table.getValueAt(row, 6).toString(); // kolom total
+            String tarif = table.getValueAt(row, 6).toString();
 
             int confirm = JOptionPane.showConfirmDialog(
                     null,
@@ -432,9 +359,6 @@ public class KendaraanMasukView extends JFrame {
         setVisible(true);
     }
 
-    // =========================================
-    // LOAD TABLE
-    // =========================================
     public void loadTable() {
 
         DefaultTableModel model
@@ -461,9 +385,6 @@ public class KendaraanMasukView extends JFrame {
         }
     }
 
-    // =========================================
-    // LOAD SEARCH
-    // =========================================
     public void loadTableSearch(String keyword) {
 
         DefaultTableModel model
@@ -490,9 +411,6 @@ public class KendaraanMasukView extends JFrame {
         }
     }
 
-    // =========================================
-    // BUTTON STYLE
-    // =========================================
     private JButton createButton(
             String text,
             Color color

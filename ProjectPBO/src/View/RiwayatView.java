@@ -2,16 +2,14 @@ package View;
 
 import Controller.RiwayatKendaraanController;
 import Model.Kendaraan;
+import Panel.HeaderPanel;
 import Panel.SidebarPanel;
-import View.FormKendaraanView;
 
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
-
-import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 public class RiwayatView extends JFrame {
 
@@ -40,9 +38,6 @@ public class RiwayatView extends JFrame {
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        // =========================================
-        // MAIN PANEL
-        // =========================================
         JPanel mainPanel = new JPanel(
                 new BorderLayout(20, 20)
         );
@@ -55,56 +50,8 @@ public class RiwayatView extends JFrame {
                 new Color(240, 240, 240)
         );
 
-        // =========================================
-        // HEADER
-        // =========================================
-        JPanel header = new JPanel(
-                new BorderLayout()
-        );
+        HeaderPanel header = new HeaderPanel("Riwayat Parkir",username);
 
-        header.setPreferredSize(
-                new Dimension(1200, 70)
-        );
-
-        header.setBackground(
-                new Color(30, 30, 30)
-        );
-
-        header.setBorder(
-                new EmptyBorder(10, 20, 10, 20)
-        );
-
-        JLabel title = new JLabel(
-                "RIWAYAT KENDARAAN PARKIR"
-        );
-
-        title.setForeground(Color.WHITE);
-
-        title.setFont(
-                new Font("Arial",
-                        Font.BOLD,
-                        24)
-        );
-
-        JLabel adminLabel = new JLabel(
-                "Login sebagai : " + username
-        );
-
-        adminLabel.setForeground(Color.WHITE);
-
-        adminLabel.setFont(
-                new Font("Arial",
-                        Font.PLAIN,
-                        16)
-        );
-
-        header.add(title, BorderLayout.WEST);
-
-        header.add(adminLabel, BorderLayout.EAST);
-
-        // =========================================
-        // SIDEBAR
-        // =========================================
         SidebarPanel sidebar = new SidebarPanel();
 
         sidebar.getDashboardBtn().addActionListener(e -> {
@@ -133,18 +80,13 @@ public class RiwayatView extends JFrame {
 
             new LoginView();
         });
-        // =========================================
-        // CENTER PANEL
-        // =========================================
+        
         JPanel centerPanel = new JPanel(
                 new BorderLayout(20, 20)
         );
 
         centerPanel.setOpaque(false);
 
-        // =========================================
-        // TOP PANEL
-        // =========================================
         JPanel topPanel = new JPanel(
                 new BorderLayout()
         );
@@ -190,9 +132,6 @@ public class RiwayatView extends JFrame {
         topPanel.add(searchPanel,
                 BorderLayout.EAST);
 
-        // =========================================
-        // TABLE
-        // =========================================
         String[] column = {
             "ID",
             "Plat Nomor",
@@ -240,9 +179,6 @@ public class RiwayatView extends JFrame {
                 )
         );
 
-        // =========================================
-        // BUTTON PANEL
-        // =========================================
         JPanel buttonPanel = new JPanel(
                 new FlowLayout(
                         FlowLayout.CENTER,
@@ -281,19 +217,12 @@ public class RiwayatView extends JFrame {
 
         buttonPanel.add(btnKembali);
 
-        // =========================================
-        // ADD CENTER PANEL
-        // =========================================
         centerPanel.add(topPanel,
                 BorderLayout.NORTH);
 
         centerPanel.add(scrollPane,
                 BorderLayout.CENTER);
 
-
-        // =========================================
-        // ADD MAIN PANEL
-        // =========================================
         mainPanel.add(header,
                 BorderLayout.NORTH);
 
@@ -305,17 +234,12 @@ public class RiwayatView extends JFrame {
 
         add(mainPanel);
 
-        // =========================================
-        // ACTION BUTTON
-        // =========================================
-        // TAMBAH
         btnTambah.addActionListener(e -> {
 
             new FormKendaraanView(this,
                     "Tambah");
         });
 
-        // EDIT
         btnEdit.addActionListener(e -> {
 
             int row = table.getSelectedRow();
@@ -346,7 +270,6 @@ public class RiwayatView extends JFrame {
             }
         });
 
-        // HAPUS
         btnHapus.addActionListener(e -> {
 
             int row = table.getSelectedRow();
@@ -375,8 +298,6 @@ public class RiwayatView extends JFrame {
 
                 if (confirm == JOptionPane.YES_OPTION) {
 
-//                    controller.deleteKendaraan(id);
-
                     loadTable();
 
                     JOptionPane.showMessageDialog(
@@ -387,7 +308,6 @@ public class RiwayatView extends JFrame {
             }
         });
 
-        // CARI
         btnCari.addActionListener(e -> {
 
             String keyword
@@ -396,7 +316,6 @@ public class RiwayatView extends JFrame {
             loadTableSearch(keyword);
         });
 
-        // KEMBALI
         btnKembali.addActionListener(e -> {
 
             dispose();
@@ -407,9 +326,6 @@ public class RiwayatView extends JFrame {
         setVisible(true);
     }
 
-    // =========================================
-    // LOAD TABLE
-    // =========================================
     public void loadTable() {
 
         DefaultTableModel model
@@ -437,9 +353,6 @@ public class RiwayatView extends JFrame {
         }
     }
 
-    // =========================================
-    // LOAD SEARCH
-    // =========================================
     public void loadTableSearch(String keyword) {
 
         DefaultTableModel model
@@ -458,16 +371,15 @@ public class RiwayatView extends JFrame {
                 k.getJenisKendaraan(),
                 k.getNomorSlot(),
                 k.getWaktuMasukFormat(),
-                k.getLamaParkir()
+                k.getWaktuKeluarFormat(),
+                k.getLamaParkir()+" Jam",
+                "Rp"+k.getTarifParkir()
             };
 
             model.addRow(row);
         }
     }
 
-    // =========================================
-    // BUTTON STYLE
-    // =========================================
     private JButton createButton(
             String text,
             Color color

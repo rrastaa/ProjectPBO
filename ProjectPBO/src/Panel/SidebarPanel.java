@@ -20,13 +20,12 @@ public class SidebarPanel extends JPanel {
 
         setBackground(Color.LIGHT_GRAY);
 
-        // PADDING PANEL
         setBorder(
                 BorderFactory.createEmptyBorder(
-                        20, // atas
-                        15, // kiri
-                        20, // bawah
-                        15 // kanan
+                        20, 
+                        15, 
+                        20, 
+                        15 
                 )
         );
 
@@ -60,7 +59,6 @@ public class SidebarPanel extends JPanel {
         );
     }
 
-    // OPTIONAL GETTER
     public JButton getDashboardBtn() {
         
         return dashboardBtn;

@@ -3,6 +3,7 @@ package View;
 import Panel.SidebarPanel;
 import Controller.ParkirController;
 import Model.SlotParkir;
+import Panel.HeaderPanel;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -22,9 +23,6 @@ public class ParkirView extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // =========================================
-        // PANEL UTAMA
-        // =========================================
         JPanel mainPanel = new JPanel(
                 new BorderLayout(20, 20)
         );
@@ -37,49 +35,8 @@ public class ParkirView extends JFrame {
 
         mainPanel.setBackground(new Color(240, 240, 240));
 
-        // =========================================
-        // HEADER
-        // =========================================
-        JPanel header = new JPanel(
-                new BorderLayout()
-        );
+        HeaderPanel header = new HeaderPanel("Dashboard Parkir",username);
 
-        header.setPreferredSize(new Dimension(1200, 70));
-
-        header.setBackground(new Color(30, 30, 30));
-
-        header.setBorder(
-                BorderFactory.createEmptyBorder(
-                        10, 20, 10, 20
-                )
-        );
-
-        JLabel title = new JLabel(
-                "DASHBOARD SISTEM PARKIR MALL"
-        );
-
-        title.setForeground(Color.WHITE);
-
-        title.setFont(
-                new Font("Arial", Font.BOLD, 24)
-        );
-
-        JLabel adminLabel = new JLabel(
-                "Login sebagai : " + username
-        );
-
-        adminLabel.setForeground(Color.WHITE);
-
-        adminLabel.setFont(
-                new Font("Arial", Font.PLAIN, 16)
-        );
-
-        header.add(title, BorderLayout.WEST);
-        header.add(adminLabel, BorderLayout.EAST);
-
-        // =========================================
-        // SIDEBAR
-        // =========================================
         SidebarPanel sidebar = new SidebarPanel();
 
         sidebar.getDashboardBtn().addActionListener(e -> {
@@ -110,9 +67,6 @@ public class ParkirView extends JFrame {
             new LoginView();
         });
 
-        // =========================================
-        // PANEL TENGAH
-        // =========================================
         JPanel centerPanel = new JPanel(
                 new BorderLayout(20, 20)
         );
@@ -125,9 +79,6 @@ public class ParkirView extends JFrame {
                 )
         );
 
-        // =========================================
-        // INFO PANEL
-        // =========================================
         JPanel infoPanel = new JPanel(
                 new GridLayout(1, 3, 20, 20)
         );
@@ -159,9 +110,6 @@ public class ParkirView extends JFrame {
         infoPanel.add(terisiPanel);
         infoPanel.add(totalPanel);
 
-        // =========================================
-        // AREA PARKIR
-        // =========================================
         JPanel semuaArea = new JPanel(
                 new BorderLayout(20, 20)
         );
@@ -177,18 +125,12 @@ public class ParkirView extends JFrame {
                 )
         );
 
-        // =========================================
-        // AREA ATAS
-        // =========================================
         JPanel areaAtas = new JPanel(
                 new FlowLayout(FlowLayout.CENTER, 15, 15)
         );
 
         areaAtas.setOpaque(false);
 
-        // =========================================
-        // JALAN TENGAH
-        // =========================================
         JPanel jalanPanel = new JPanel(
                 new BorderLayout()
         );
@@ -220,10 +162,7 @@ public class ParkirView extends JFrame {
         );
 
         jalanPanel.add(jalanLabel);
-
-        // =========================================
-        // AREA BAWAH
-        // =========================================
+        
         JPanel areaBawah = new JPanel(
                 new FlowLayout(
                         FlowLayout.CENTER,
@@ -244,9 +183,6 @@ public class ParkirView extends JFrame {
                             data.getNomorSlot()
                     );
 
-            // =====================================
-            // WARNA BERDASARKAN DATABASE
-            // =====================================
             if (data.getStatusSlot()
                     .equals("Terisi")) {
 
@@ -258,9 +194,6 @@ public class ParkirView extends JFrame {
 
             }
 
-            // =====================================
-            // MASUKKAN KE AREA
-            // =====================================
             if (data.getNomorSlot()
                     .startsWith("A")) {
 
@@ -272,18 +205,12 @@ public class ParkirView extends JFrame {
             }
         }
 
-        // =========================================
-        // ADD AREA
-        // =========================================
         semuaArea.add(areaAtas, BorderLayout.NORTH);
 
         semuaArea.add(jalanPanel, BorderLayout.CENTER);
 
         semuaArea.add(areaBawah, BorderLayout.SOUTH);
 
-        // =========================================
-        // LEGEND PANEL
-        // =========================================
         JPanel legendPanel = new JPanel(
                 new FlowLayout(
                         FlowLayout.LEFT,
@@ -301,7 +228,7 @@ public class ParkirView extends JFrame {
         );
 
         JPanel hijau = new JPanel();
-//        hijau.setBackground(Color.GREEN);
+
         hijau.setPreferredSize(
                 new Dimension(20, 20)
         );
@@ -320,17 +247,10 @@ public class ParkirView extends JFrame {
         legendPanel.add(merah);
         legendPanel.add(new JLabel("Terisi"));
 
-        // =========================================
-        // ADD CENTER PANEL
-        // =========================================
         centerPanel.add(infoPanel, BorderLayout.SOUTH);
 
         centerPanel.add(semuaArea, BorderLayout.CENTER);
 
-//        centerPanel.add(legendPanel, BorderLayout.NORTH);
-        // =========================================
-        // ADD MAIN
-        // =========================================
         mainPanel.add(header, BorderLayout.NORTH);
 
         mainPanel.add(sidebar, BorderLayout.WEST);
@@ -342,18 +262,13 @@ public class ParkirView extends JFrame {
         setVisible(true);
     }
 
-    // =========================================
-    // SLOT BUTTON
-    // =========================================
-    private JButton createSlotButton(String text) {
+    private JButton createSlotButton(String slot) {
 
-        JButton btn = new JButton(text);
+        JButton btn = new JButton(slot);
 
         btn.setPreferredSize(
                 new Dimension(75, 100)
         );
-
-//        btn.setBackground(Color.GREEN);
 
         btn.setOpaque(true);
 
@@ -384,26 +299,14 @@ public class ParkirView extends JFrame {
 
         btn.addActionListener(e -> {
 
-            if (btn.getBackground() == Color.GREEN) {
+            if (btn.getBackground() != Color.RED) {
 
-                int confirm = JOptionPane.showConfirmDialog(
-                        null,
-                        "Pilih slot " + text + "?",
-                        "Konfirmasi Slot",
-                        JOptionPane.YES_NO_OPTION
+                new FormKendaraanView(
+                        this,
+                        "Tambah",
+                        slot
                 );
-
-                if (confirm == JOptionPane.YES_OPTION) {
-
-                    btn.setBackground(Color.RED);
-
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "Slot " + text
-                            + " berhasil dipilih!"
-                    );
-                }
-
+                System.out.println(slot);
             } else {
 
                 JOptionPane.showMessageDialog(
@@ -416,9 +319,6 @@ public class ParkirView extends JFrame {
         return btn;
     }
 
-    // =========================================
-    // INFO CARD
-    // =========================================
     private JPanel createInfoCard(
             String title,
             String value

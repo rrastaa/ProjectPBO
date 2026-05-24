@@ -5,8 +5,6 @@ import Model.Kendaraan;
 import View.FormKendaraanView;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
 
 import java.util.ArrayList;
 
@@ -32,17 +30,11 @@ public class KendaraanController {
         }
     }
 
-    // =========================================
-    // GET ALL DATA
-    // =========================================
     public ArrayList<Kendaraan> getAllKendaraan() {
 
         return dao.getAllKendaraan();
     }
 
-    // =========================================
-    // INSERT
-    // =========================================
     public void insertKendaraan(
             Kendaraan kendaraan
     ) {
@@ -50,9 +42,6 @@ public class KendaraanController {
         dao.insertKendaraan(kendaraan);
     }
 
-    // =========================================
-    // UPDATE
-    // =========================================
     public void updateKendaraan(
             Kendaraan kendaraan
     ) {
@@ -60,25 +49,16 @@ public class KendaraanController {
         dao.updateKendaraan(kendaraan);
     }
 
-    // =========================================
-    // DELETE
-    // =========================================
     public void deleteKendaraan(int id) {
 
         dao.deleteKendaraan(id);
     }
     
-    // =========================================
-    // SELESAI
-    // =========================================
     public void selesaiParkir(int id) {
 
         dao.selesaiParkir(id);
     }
 
-    // =========================================
-    // SEARCH
-    // =========================================
     public ArrayList<Kendaraan> searchKendaraan(
             String keyword
     ) {

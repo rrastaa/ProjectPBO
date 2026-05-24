@@ -3,6 +3,7 @@ package DAO;
 import Connection.DBConnection;
 import Model.Kendaraan;
 import DAO.Utils.WaktuHelper;
+import DAO.Utils.TarifService;
 
 import java.sql.Timestamp;
 import java.sql.*;
@@ -19,9 +20,6 @@ public class KendaraanDAO {
         System.out.println(conn);
     }
 
-    // =========================================
-    // GET ALL DATA
-    // =========================================
     public ArrayList<Kendaraan> getAllKendaraan() {
 
         ArrayList<Kendaraan> list
@@ -70,16 +68,9 @@ public class KendaraanDAO {
         return list;
     }
 
-    // =========================================
-    // INSERT
-    // =========================================
     public boolean insertKendaraan(Kendaraan kendaraan) {
 
         try {
-
-            // =========================================
-            // 1. CEK / INSERT KENDARAAN
-            // =========================================
             String checkQuery
                     = "SELECT id_kendaraan FROM kendaraan WHERE plat_nomor=?";
 
@@ -118,9 +109,6 @@ public class KendaraanDAO {
                 idKendaraan = rsGen.getInt(1);
             }
 
-            // =========================================
-            // 2. CEK SLOT
-            // =========================================
             String checkSlot
                     = "SELECT id_slot, status_slot FROM slot_parkir WHERE nomor_slot=?";
 
@@ -144,9 +132,6 @@ public class KendaraanDAO {
                 return false;
             }
 
-            // =========================================
-            // 3. CEK KENDARAAN SUDAH PARKIR AKTIF
-            // =========================================
             String checkActive
                     = "SELECT p.id_parkir "
                     + "FROM parkir p "
@@ -165,9 +150,6 @@ public class KendaraanDAO {
                 return false;
             }
 
-            // =========================================
-            // 4. INSERT PARKIR
-            // =========================================
             String insertParkir
                     = "INSERT INTO parkir (id_kendaraan, id_slot, waktu_masuk) VALUES (?, ?, ?)";
 
@@ -180,9 +162,6 @@ public class KendaraanDAO {
 
             psParkir.executeUpdate();
 
-            // =========================================
-            // 5. UPDATE SLOT
-            // =========================================
             String updateSlot
                     = "UPDATE slot_parkir SET status_slot='Terisi' WHERE id_slot=?";
 
@@ -201,16 +180,10 @@ public class KendaraanDAO {
         }
     }
 
-    // =========================================
-    // UPDATE
-    // =========================================
     public boolean updateKendaraan(Kendaraan kendaraan) {
 
         try {
 
-            // =========================================
-            // 1. AMBIL SLOT LAMA
-            // =========================================
             String getOldSlot
                     = "SELECT id_slot FROM parkir WHERE id_kendaraan=?";
 
@@ -229,9 +202,6 @@ public class KendaraanDAO {
                 oldSlot = rsOld.getInt("id_slot");
             }
 
-            // =========================================
-            // 2. UPDATE KENDARAAN
-            // =========================================
             String updateKendaraan
                     = "UPDATE kendaraan SET plat_nomor=?, jenis_kendaraan=? WHERE id_kendaraan=?";
 
@@ -246,9 +216,6 @@ public class KendaraanDAO {
 
             ps.executeUpdate();
 
-            // =========================================
-            // 3. UPDATE PARKIR (slot baru)
-            // =========================================
             String getNewSlot
                     = "SELECT id_slot FROM slot_parkir WHERE nomor_slot=?";
 
@@ -266,9 +233,6 @@ public class KendaraanDAO {
 
             int newSlot = rsNew.getInt("id_slot");
 
-            // =========================================
-            // 4. UPDATE PARKIR TABLE
-            // =========================================
             String updateParkir
                     = "UPDATE parkir SET id_slot=? WHERE id_kendaraan=?";
 
@@ -282,9 +246,6 @@ public class KendaraanDAO {
 
             psParkir.executeUpdate();
 
-            // =========================================
-            // 5. UPDATE STATUS SLOT (OLD -> KOSONG)
-            // =========================================
             if (oldSlot != null) {
 
                 String kosongkanOld
@@ -300,9 +261,6 @@ public class KendaraanDAO {
                 psKosong.executeUpdate();
             }
 
-            // =========================================
-            // 6. UPDATE STATUS SLOT (NEW -> TERISI)
-            // =========================================
             String isiNew
                     = "UPDATE slot_parkir SET status_slot='Terisi' WHERE id_slot=?";
 
@@ -323,16 +281,9 @@ public class KendaraanDAO {
         }
     }
 
-    // =========================================
-    // DELETE
-    // =========================================
     public boolean deleteKendaraan(int id) {
 
         try {
-
-            // =========================================
-            // 1. AMBIL SLOT YANG DIPAKAI KENDARAAN
-            // =========================================
             String getSlot
                     = "SELECT p.id_slot "
                     + "FROM parkir p "
@@ -352,9 +303,6 @@ public class KendaraanDAO {
                 idSlot = rs.getInt("id_slot");
             }
 
-            // =========================================
-            // 2. UPDATE SLOT JADI KOSONG (kalau ada)
-            // =========================================
             if (idSlot != null) {
 
                 String updateSlot
@@ -368,9 +316,6 @@ public class KendaraanDAO {
                 psUpdate.executeUpdate();
             }
 
-            // =========================================
-            // 3. HAPUS DATA PARKIR
-            // =========================================
             String deleteParkir
                     = "DELETE FROM parkir WHERE id_kendaraan=?";
 
@@ -381,9 +326,6 @@ public class KendaraanDAO {
 
             psDeleteParkir.executeUpdate();
 
-            // =========================================
-            // 4. HAPUS KENDARAAN
-            // =========================================
             String deleteKendaraan
                     = "DELETE FROM kendaraan WHERE id_kendaraan=?";
 
@@ -402,9 +344,6 @@ public class KendaraanDAO {
         }
     }
 
-    // =========================================
-    // SEARCH
-    // =========================================
     public ArrayList<Kendaraan> searchKendaraan(
             String keyword
     ) {
@@ -451,31 +390,17 @@ public class KendaraanDAO {
 
                 Timestamp waktuMasuk = rs.getTimestamp("waktu_masuk");
 
-                // kalau tidak parkir (null safety)
                 int jam = 0;
+
                 if (waktuMasuk != null) {
+
                     jam = WaktuHelper.hitungJam(waktuMasuk);
-                    if (jam < 1) {
-                        jam = 1; // minimal 1 jam
-                    }
                 }
 
-                int tarif = 0;
-
-                if (rs.getString("jenis_kendaraan").equalsIgnoreCase("Motor")) {
-
-                    tarif = 2000;
-                    if (jam > 1) {
-                        tarif += (jam - 1) * 1000;
-                    }
-
-                } else if (rs.getString("jenis_kendaraan").equalsIgnoreCase("Mobil")) {
-
-                    tarif = 3000;
-                    if (jam > 1) {
-                        tarif += (jam - 1) * 2000;
-                    }
-                }
+                int tarif = TarifService.hitungTarif(
+                        rs.getString("jenis_kendaraan"),
+                        jam
+                );
 
                 kendaraan.setNomorSlot(rs.getString("nomor_slot"));
                 kendaraan.setWaktuMasuk(waktuMasuk);
@@ -533,31 +458,17 @@ public class KendaraanDAO {
 
                 Timestamp waktuMasuk = rs.getTimestamp("waktu_masuk");
 
-                // kalau tidak parkir (null safety)
                 int jam = 0;
+
                 if (waktuMasuk != null) {
+
                     jam = WaktuHelper.hitungJam(waktuMasuk);
-                    if (jam < 1) {
-                        jam = 1; // minimal 1 jam
-                    }
                 }
 
-                int tarif = 0;
-
-                if (rs.getString("jenis_kendaraan").equalsIgnoreCase("Motor")) {
-
-                    tarif = 2000;
-                    if (jam > 1) {
-                        tarif += (jam - 1) * 1000;
-                    }
-
-                } else if (rs.getString("jenis_kendaraan").equalsIgnoreCase("Mobil")) {
-
-                    tarif = 3000;
-                    if (jam > 1) {
-                        tarif += (jam - 1) * 2000;
-                    }
-                }
+                int tarif = TarifService.hitungTarif(
+                        rs.getString("jenis_kendaraan"),
+                        jam
+                );
 
                 kendaraan.setNomorSlot(rs.getString("nomor_slot"));
                 kendaraan.setWaktuMasuk(waktuMasuk);
@@ -583,9 +494,6 @@ public class KendaraanDAO {
 
         try {
 
-            // =========================================
-            // 1. AMBIL DATA PARKIR AKTIF
-            // =========================================
             String getData
                     = "SELECT id_parkir, id_slot, waktu_masuk "
                     + "FROM parkir "
@@ -610,9 +518,6 @@ public class KendaraanDAO {
             Timestamp waktuKeluar
                     = new Timestamp(System.currentTimeMillis());
 
-            // =========================================
-            // 2. HITUNG DURASI (JAM)
-            // =========================================
             long diffMs
                     = waktuKeluar.getTime() - waktuMasuk.getTime();
 
@@ -623,9 +528,6 @@ public class KendaraanDAO {
                 jam = 1;
             }
 
-            // =========================================
-            // 3. HITUNG BIAYA
-            // =========================================
             String getJenis
                     = "SELECT jenis_kendaraan FROM kendaraan WHERE id_kendaraan=?";
 
@@ -661,9 +563,6 @@ public class KendaraanDAO {
                 }
             }
 
-            // =========================================
-            // 4. UPDATE PARKIR (SELESAI)
-            // =========================================
             String update
                     = "UPDATE parkir SET "
                     + "waktu_keluar=?, "
@@ -682,9 +581,6 @@ public class KendaraanDAO {
 
             psUpdate.executeUpdate();
 
-            // =========================================
-            // 5. KOSONGKAN SLOT
-            // =========================================
             String updateSlot
                     = "UPDATE slot_parkir SET status_slot='Kosong' WHERE id_slot=?";
 

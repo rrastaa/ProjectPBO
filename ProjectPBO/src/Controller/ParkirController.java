@@ -14,17 +14,11 @@ public class ParkirController {
         slotDAO = new SlotParkirDAO();
     }
 
-    // =====================================
-    // AMBIL SEMUA SLOT
-    // =====================================
     public ArrayList<SlotParkir> getAllSlot() {
 
         return slotDAO.getAllSlot();
     }
 
-    // =====================================
-    // UBAH STATUS SLOT
-    // =====================================
     public void isiSlot(int idSlot) {
 
         slotDAO.updateStatusSlot(

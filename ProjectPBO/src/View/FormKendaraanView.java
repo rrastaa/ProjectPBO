@@ -41,7 +41,6 @@ public class FormKendaraanView extends JFrame {
                 new EmptyBorder(20, 20, 20, 20)
         );
 
-        // TITLE
         JLabel title = new JLabel(
                 mode + " Kendaraan"
         );
@@ -54,12 +53,10 @@ public class FormKendaraanView extends JFrame {
                 )
         );
 
-        // FORM PANEL
         JPanel formPanel = new JPanel(
                 new GridLayout(3, 2, 15, 15)
         );
 
-        // PLAT
         formPanel.add(
                 new JLabel("Plat Nomor")
         );
@@ -68,7 +65,6 @@ public class FormKendaraanView extends JFrame {
 
         formPanel.add(tfPlat);
 
-        // JENIS
         formPanel.add(
                 new JLabel("Jenis Kendaraan")
         );
@@ -82,7 +78,6 @@ public class FormKendaraanView extends JFrame {
 
         formPanel.add(cbJenis);
 
-        // SLOT
         formPanel.add(
                 new JLabel("Nomor Slot")
         );
@@ -91,7 +86,6 @@ public class FormKendaraanView extends JFrame {
 
         formPanel.add(tfSlot);
 
-        // BUTTON PANEL
         JPanel buttonPanel = new JPanel(
                 new FlowLayout(
                         FlowLayout.CENTER,
@@ -108,7 +102,6 @@ public class FormKendaraanView extends JFrame {
 
         buttonPanel.add(btnBatal);
 
-        // ADD PANEL
         mainPanel.add(
                 title,
                 BorderLayout.NORTH
@@ -126,21 +119,16 @@ public class FormKendaraanView extends JFrame {
 
         add(mainPanel);
 
-        // BATAL
         btnBatal.addActionListener(e -> {
 
             dispose();
         });
 
-        // controller otomatis bind listener
         new KendaraanController(this);
 
         setVisible(true);
     }
 
-    // =========================================
-    // CONSTRUCTOR EDIT
-    // =========================================
     public FormKendaraanView(
             JFrame parent,
             String mode,
@@ -158,6 +146,10 @@ public class FormKendaraanView extends JFrame {
 
         cbJenis.setSelectedItem(jenis);
 
+        tfSlot.setText(slot);
+    }
+    public FormKendaraanView(JFrame parent,String mode,String slot){
+        this(parent,mode);
         tfSlot.setText(slot);
     }
 }

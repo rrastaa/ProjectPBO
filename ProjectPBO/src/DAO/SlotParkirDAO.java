@@ -8,9 +8,6 @@ import java.util.ArrayList;
 
 public class SlotParkirDAO {
 
-    // =====================================
-    // GET ALL SLOT
-    // =====================================
     public ArrayList<SlotParkir> getAllSlot() {
 
         ArrayList<SlotParkir> list
@@ -49,9 +46,6 @@ public class SlotParkirDAO {
         return list;
     }
 
-    // =====================================
-    // UPDATE STATUS SLOT
-    // =====================================
     public void updateStatusSlot(
             int idSlot,
             String status

@@ -24,9 +24,6 @@ public class Kendaraan {
 
     private int tarifParkir;
 
-    // =========================================
-    // GETTER & SETTER
-    // =========================================
     public int getIdKendaraan() {
         return idKendaraan;
     }

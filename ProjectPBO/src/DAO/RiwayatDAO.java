@@ -19,10 +19,6 @@ public class RiwayatDAO {
         System.out.println(conn);
     }
 
-
-    // =========================================
-    // SEARCH
-    // =========================================
     public ArrayList<Kendaraan> searchKendaraan(
             String keyword
     ) {
@@ -35,13 +31,17 @@ public class RiwayatDAO {
                 + "k.plat_nomor, "
                 + "k.jenis_kendaraan, "
                 + "s.nomor_slot, "
-                + "p.waktu_masuk "
+                + "p.waktu_masuk, "
+                + "p.waktu_keluar, "
+                + "p.durasi_jam, "
+                + "p.biaya "
                 + "FROM parkir p "
                 + "JOIN kendaraan k "
                 + "ON p.id_kendaraan = k.id_kendaraan "
                 + "JOIN slot_parkir s "
                 + "ON p.id_slot = s.id_slot "
-                + "WHERE k.plat_nomor LIKE ? OR s.nomor_slot LIKE ?";
+                + "WHERE (k.plat_nomor LIKE ? OR s.nomor_slot LIKE ?)"
+                + "AND p.waktu_keluar IS NOT NULL";
 
         try {
 
@@ -62,39 +62,32 @@ public class RiwayatDAO {
 
             while (rs.next()) {
 
-                Kendaraan kendaraan
-                        = new Kendaraan();
+                Kendaraan kendaraan = new Kendaraan();
 
-                kendaraan.setIdKendaraan(
-                        rs.getInt("id_kendaraan")
-                );
+                kendaraan.setIdKendaraan(rs.getInt("id_kendaraan"));
+                kendaraan.setPlatNomor(rs.getString("plat_nomor"));
+                kendaraan.setJenisKendaraan(rs.getString("jenis_kendaraan"));
 
-                kendaraan.setPlatNomor(
-                        rs.getString("plat_nomor")
-                );
+                Timestamp waktuMasuk = rs.getTimestamp("waktu_masuk");
+                Timestamp waktuKeluar = rs.getTimestamp("waktu_keluar");
 
-                kendaraan.setJenisKendaraan(
-                        rs.getString("jenis_kendaraan")
-                );
+                int jam = 0;
+                if (waktuMasuk != null) {
+                    jam = WaktuHelper.hitungJam(waktuMasuk);
+                    if (jam < 1) {
+                        jam = 1;
+                    }
+                }
 
-                kendaraan.setNomorSlot(
-                        rs.getString("nomor_slot")
-                );
+                kendaraan.setNomorSlot(rs.getString("nomor_slot"));
+                kendaraan.setWaktuMasuk(waktuMasuk);
+                kendaraan.setWaktuMasukFormat(WaktuHelper.formatWaktu(waktuMasuk));
+                kendaraan.setWaktuKeluar(waktuKeluar);
+                kendaraan.setWaktuKeluarFormat(WaktuHelper.formatWaktu(waktuKeluar));
 
-                Timestamp waktuMasuk
-                        = rs.getTimestamp("waktu_masuk");
+                kendaraan.setLamaParkir(rs.getString("durasi_jam"));
 
-                kendaraan.setWaktuMasuk(
-                        waktuMasuk
-                );
-
-                kendaraan.setWaktuMasukFormat(
-                        WaktuHelper.formatWaktu(waktuMasuk)
-                );
-
-                kendaraan.setLamaParkir(
-                        WaktuHelper.hitungLamaParkir(waktuMasuk)
-                );
+                kendaraan.setTarifParkir(rs.getInt("biaya"));
 
                 list.add(kendaraan);
             }
@@ -147,29 +140,11 @@ public class RiwayatDAO {
                 Timestamp waktuMasuk = rs.getTimestamp("waktu_masuk");
                 Timestamp waktuKeluar = rs.getTimestamp("waktu_keluar");
 
-                // kalau tidak parkir (null safety)
                 int jam = 0;
                 if (waktuMasuk != null) {
                     jam = WaktuHelper.hitungJam(waktuMasuk);
                     if (jam < 1) {
-                        jam = 1; // minimal 1 jam
-                    }
-                }
-
-                int tarif = 0;
-
-                if (rs.getString("jenis_kendaraan").equalsIgnoreCase("Motor")) {
-
-                    tarif = 2000;
-                    if (jam > 1) {
-                        tarif += (jam - 1) * 1000;
-                    }
-
-                } else if (rs.getString("jenis_kendaraan").equalsIgnoreCase("Mobil")) {
-
-                    tarif = 3000;
-                    if (jam > 1) {
-                        tarif += (jam - 1) * 2000;
+                        jam = 1;
                     }
                 }
 
@@ -178,9 +153,7 @@ public class RiwayatDAO {
                 kendaraan.setWaktuMasukFormat(WaktuHelper.formatWaktu(waktuMasuk));
                 kendaraan.setWaktuKeluar(waktuKeluar);
                 kendaraan.setWaktuKeluarFormat(WaktuHelper.formatWaktu(waktuKeluar));
-//                kendaraan.setLamaParkir(
-//                        WaktuHelper.hitungLamaParkir(waktuMasuk)
-//                );
+
                 kendaraan.setLamaParkir(rs.getString("durasi_jam"));
 
                 kendaraan.setTarifParkir(rs.getInt("biaya"));

@@ -2,7 +2,7 @@ package Model;
 
 import java.sql.Timestamp;
 
-public class Kendaraan {
+public abstract class Kendaraan {
 
     private int idKendaraan;
 
@@ -109,6 +109,8 @@ public class Kendaraan {
     public void setLamaParkir(String lamaParkir) {
         this.lamaParkir = lamaParkir;
     }
+    
+    public abstract int hitungTarif(int jam);
 
     public int getTarifParkir() {
         return tarifParkir;

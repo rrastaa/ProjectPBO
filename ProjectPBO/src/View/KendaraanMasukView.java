@@ -43,12 +43,12 @@ public class KendaraanMasukView extends JFrame {
 
         
         JPanel mainPanel = new JPanel(
-                new BorderLayout(20, 20)
+                new BorderLayout()
         );
 
-        mainPanel.setBorder(
-                new EmptyBorder(15, 15, 15, 15)
-        );
+//        mainPanel.setBorder(
+//                new EmptyBorder(15, 15, 15, 15)
+//        );
 
         mainPanel.setBackground(
                 new Color(240, 240, 240)
@@ -80,7 +80,24 @@ public class KendaraanMasukView extends JFrame {
         });
 
         sidebar.getLogoutBtn().addActionListener(e -> {
+            
+            int confirm
+                        = JOptionPane.showConfirmDialog(
+                                null,
+                                "Log out?",
+                                "Konfirmasi",
+                                JOptionPane.YES_NO_OPTION
+                        );
 
+                if (confirm == JOptionPane.YES_OPTION) {
+
+
+
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Berhasil Log out!"
+                    );
+                }
             dispose();
 
             new LoginView();
@@ -88,6 +105,10 @@ public class KendaraanMasukView extends JFrame {
         
         JPanel centerPanel = new JPanel(
                 new BorderLayout(20, 20)
+        );
+        
+                centerPanel.setBorder(
+                new EmptyBorder(20, 20, 20, 20)
         );
 
         centerPanel.setOpaque(false);
@@ -275,6 +296,7 @@ public class KendaraanMasukView extends JFrame {
                         slot
                 );
             }
+            
         });
 
         btnHapus.addActionListener(e -> {

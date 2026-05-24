@@ -30,7 +30,7 @@ public class RiwayatView extends JFrame {
         controller = new RiwayatKendaraanController();
         controller.getKendaraanParkir();
 
-        setTitle("Data Kendaraan");
+        setTitle("Riwayat Kendaraan");
 
         setSize(1200, 750);
 
@@ -39,18 +39,14 @@ public class RiwayatView extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         JPanel mainPanel = new JPanel(
-                new BorderLayout(20, 20)
-        );
-
-        mainPanel.setBorder(
-                new EmptyBorder(15, 15, 15, 15)
+                new BorderLayout()
         );
 
         mainPanel.setBackground(
                 new Color(240, 240, 240)
         );
 
-        HeaderPanel header = new HeaderPanel("Riwayat Parkir",username);
+        HeaderPanel header = new HeaderPanel("Riwayat Parkir", username);
 
         SidebarPanel sidebar = new SidebarPanel();
 
@@ -75,14 +71,32 @@ public class RiwayatView extends JFrame {
         });
 
         sidebar.getLogoutBtn().addActionListener(e -> {
+            int confirm
+                    = JOptionPane.showConfirmDialog(
+                            null,
+                            "Log out?",
+                            "Konfirmasi",
+                            JOptionPane.YES_NO_OPTION
+                    );
 
+            if (confirm == JOptionPane.YES_OPTION) {
+
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Berhasil Log out!"
+                );
+            }
             dispose();
 
             new LoginView();
         });
-        
+
         JPanel centerPanel = new JPanel(
                 new BorderLayout(20, 20)
+        );
+
+        centerPanel.setBorder(
+                new EmptyBorder(20, 20, 20, 20)
         );
 
         centerPanel.setOpaque(false);
@@ -345,8 +359,8 @@ public class RiwayatView extends JFrame {
                 k.getNomorSlot(),
                 k.getWaktuMasukFormat(),
                 k.getWaktuKeluarFormat(),
-                k.getLamaParkir()+" Jam",
-                "Rp"+k.getTarifParkir()
+                k.getLamaParkir() + " Jam",
+                "Rp" + k.getTarifParkir()
             };
 
             model.addRow(row);
@@ -372,8 +386,8 @@ public class RiwayatView extends JFrame {
                 k.getNomorSlot(),
                 k.getWaktuMasukFormat(),
                 k.getWaktuKeluarFormat(),
-                k.getLamaParkir()+" Jam",
-                "Rp"+k.getTarifParkir()
+                k.getLamaParkir() + " Jam",
+                "Rp" + k.getTarifParkir()
             };
 
             model.addRow(row);

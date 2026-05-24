@@ -2,8 +2,11 @@ package DAO;
 
 import Connection.DBConnection;
 import Model.Kendaraan;
+import Model.Motor;
+import Model.Mobil;
 import DAO.Utils.WaktuHelper;
-import DAO.Utils.TarifService;
+//import DAO.Utils.TarifService;
+import View.KendaraanMasukView;
 
 import java.sql.Timestamp;
 import java.sql.*;
@@ -37,9 +40,19 @@ public class KendaraanDAO {
                     = st.executeQuery(query);
 
             while (rs.next()) {
+                String jenis
+                        = rs.getString("jenis_kendaraan");
 
-                Kendaraan kendaraan
-                        = new Kendaraan();
+                Kendaraan kendaraan;
+
+                if (jenis.equalsIgnoreCase("Motor")) {
+
+                    kendaraan = new Motor();
+
+                } else {
+
+                    kendaraan = new Mobil();
+                }
 
                 kendaraan.setIdKendaraan(
                         rs.getInt("id_kendaraan")
@@ -382,7 +395,19 @@ public class KendaraanDAO {
 
             while (rs.next()) {
 
-                Kendaraan kendaraan = new Kendaraan();
+                String jenis
+                        = rs.getString("jenis_kendaraan");
+
+                Kendaraan kendaraan;
+
+                if (jenis.equalsIgnoreCase("Motor")) {
+
+                    kendaraan = new Motor();
+
+                } else {
+
+                    kendaraan = new Mobil();
+                }
 
                 kendaraan.setIdKendaraan(rs.getInt("id_kendaraan"));
                 kendaraan.setPlatNomor(rs.getString("plat_nomor"));
@@ -397,10 +422,8 @@ public class KendaraanDAO {
                     jam = WaktuHelper.hitungJam(waktuMasuk);
                 }
 
-                int tarif = TarifService.hitungTarif(
-                        rs.getString("jenis_kendaraan"),
-                        jam
-                );
+                int tarif
+                        = kendaraan.hitungTarif(jam);
 
                 kendaraan.setNomorSlot(rs.getString("nomor_slot"));
                 kendaraan.setWaktuMasuk(waktuMasuk);
@@ -449,8 +472,19 @@ public class KendaraanDAO {
                     = st.executeQuery(query);
 
             while (rs.next()) {
+                String jenis
+                        = rs.getString("jenis_kendaraan");
 
-                Kendaraan kendaraan = new Kendaraan();
+                Kendaraan kendaraan;
+
+                if (jenis.equalsIgnoreCase("Motor")) {
+
+                    kendaraan = new Motor();
+
+                } else {
+
+                    kendaraan = new Mobil();
+                }
 
                 kendaraan.setIdKendaraan(rs.getInt("id_kendaraan"));
                 kendaraan.setPlatNomor(rs.getString("plat_nomor"));
@@ -465,10 +499,8 @@ public class KendaraanDAO {
                     jam = WaktuHelper.hitungJam(waktuMasuk);
                 }
 
-                int tarif = TarifService.hitungTarif(
-                        rs.getString("jenis_kendaraan"),
-                        jam
-                );
+                int tarif
+                        = kendaraan.hitungTarif(jam);
 
                 kendaraan.setNomorSlot(rs.getString("nomor_slot"));
                 kendaraan.setWaktuMasuk(waktuMasuk);

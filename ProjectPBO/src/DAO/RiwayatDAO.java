@@ -3,6 +3,8 @@ package DAO;
 import Connection.DBConnection;
 import Model.Kendaraan;
 import DAO.Utils.WaktuHelper;
+import Model.Mobil;
+import Model.Motor;
 
 import java.sql.Timestamp;
 import java.sql.*;
@@ -61,8 +63,19 @@ public class RiwayatDAO {
                     = ps.executeQuery();
 
             while (rs.next()) {
+                String jenis
+                        = rs.getString("jenis_kendaraan");
 
-                Kendaraan kendaraan = new Kendaraan();
+                Kendaraan kendaraan;
+
+                if (jenis.equalsIgnoreCase("Motor")) {
+
+                    kendaraan = new Motor();
+
+                } else {
+
+                    kendaraan = new Mobil();
+                }
 
                 kendaraan.setIdKendaraan(rs.getInt("id_kendaraan"));
                 kendaraan.setPlatNomor(rs.getString("plat_nomor"));
@@ -130,8 +143,19 @@ public class RiwayatDAO {
                     = st.executeQuery(query);
 
             while (rs.next()) {
+                String jenis
+                        = rs.getString("jenis_kendaraan");
 
-                Kendaraan kendaraan = new Kendaraan();
+                Kendaraan kendaraan;
+
+                if (jenis.equalsIgnoreCase("Motor")) {
+
+                    kendaraan = new Motor();
+
+                } else {
+
+                    kendaraan = new Mobil();
+                }
 
                 kendaraan.setIdKendaraan(rs.getInt("id_kendaraan"));
                 kendaraan.setPlatNomor(rs.getString("plat_nomor"));

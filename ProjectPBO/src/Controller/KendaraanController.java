@@ -2,6 +2,8 @@ package Controller;
 
 import DAO.KendaraanDAO;
 import Model.Kendaraan;
+import Model.Mobil;
+import Model.Motor;
 import View.FormKendaraanView;
 
 import javax.swing.*;
@@ -53,7 +55,7 @@ public class KendaraanController {
 
         dao.deleteKendaraan(id);
     }
-    
+
     public void selesaiParkir(int id) {
 
         dao.selesaiParkir(id);
@@ -74,8 +76,21 @@ public class KendaraanController {
     public void bindInsert() {
 
         view.btnSimpan.addActionListener(e -> {
+            String jenis
+                    = view.cbJenis
+                            .getSelectedItem()
+                            .toString();
 
-            Kendaraan kendaraan = new Kendaraan();
+            Kendaraan kendaraan;
+
+            if (jenis.equalsIgnoreCase("Motor")) {
+
+                kendaraan = new Motor();
+
+            } else {
+
+                kendaraan = new Mobil();
+            }
 
             kendaraan.setPlatNomor(view.tfPlat.getText());
             kendaraan.setJenisKendaraan(view.cbJenis.getSelectedItem().toString());
@@ -96,7 +111,21 @@ public class KendaraanController {
 
         view.btnSimpan.addActionListener(e -> {
 
-            Kendaraan kendaraan = new Kendaraan();
+            String jenis
+                    = view.cbJenis
+                            .getSelectedItem()
+                            .toString();
+
+            Kendaraan kendaraan;
+
+            if (jenis.equalsIgnoreCase("Motor")) {
+
+                kendaraan = new Motor();
+
+            } else {
+
+                kendaraan = new Mobil();
+            }
 
             kendaraan.setIdKendaraan(view.id);
             kendaraan.setPlatNomor(view.tfPlat.getText());

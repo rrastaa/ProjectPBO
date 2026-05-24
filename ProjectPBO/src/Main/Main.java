@@ -10,10 +10,10 @@ public class Main {
 
     
     public static void main(String[] args) {
-//        DBConnection.Connect();
-//        LoginView view = new LoginView();
-//        new LoginController(view);
-          new KendaraanMasukView("Admin");
+        DBConnection.Connect();
+        LoginView view = new LoginView();
+        new LoginController(view);
+//          new KendaraanMasukView("Admin");
     }
     
 }

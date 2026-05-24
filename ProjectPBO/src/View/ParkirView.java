@@ -24,18 +24,12 @@ public class ParkirView extends JFrame {
         setLocationRelativeTo(null);
 
         JPanel mainPanel = new JPanel(
-                new BorderLayout(20, 20)
-        );
-
-        mainPanel.setBorder(
-                BorderFactory.createEmptyBorder(
-                        15, 15, 15, 15
-                )
+                new BorderLayout()
         );
 
         mainPanel.setBackground(new Color(240, 240, 240));
 
-        HeaderPanel header = new HeaderPanel("Dashboard Parkir",username);
+        HeaderPanel header = new HeaderPanel("Dashboard Parkir", username);
 
         SidebarPanel sidebar = new SidebarPanel();
 
@@ -45,7 +39,7 @@ public class ParkirView extends JFrame {
 
             new ParkirView(username);
         });
-        
+
         sidebar.getMasukBtn().addActionListener(e -> {
 
             dispose();
@@ -61,7 +55,21 @@ public class ParkirView extends JFrame {
         });
 
         sidebar.getLogoutBtn().addActionListener(e -> {
+            int confirm
+                    = JOptionPane.showConfirmDialog(
+                            null,
+                            "Log out?",
+                            "Konfirmasi",
+                            JOptionPane.YES_NO_OPTION
+                    );
 
+            if (confirm == JOptionPane.YES_OPTION) {
+
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Berhasil Log out!"
+                );
+            }
             dispose();
 
             new LoginView();
@@ -74,9 +82,7 @@ public class ParkirView extends JFrame {
         centerPanel.setOpaque(false);
 
         centerPanel.setBorder(
-                BorderFactory.createEmptyBorder(
-                        10, 10, 10, 10
-                )
+                new EmptyBorder(20, 20, 20, 20)
         );
 
         JPanel infoPanel = new JPanel(
@@ -162,7 +168,7 @@ public class ParkirView extends JFrame {
         );
 
         jalanPanel.add(jalanLabel);
-        
+
         JPanel areaBawah = new JPanel(
                 new FlowLayout(
                         FlowLayout.CENTER,
@@ -191,7 +197,6 @@ public class ParkirView extends JFrame {
             } else {
 
 //                slot.setBackground(Color.GREEN);
-
             }
 
             if (data.getNomorSlot()

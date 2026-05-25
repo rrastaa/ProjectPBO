@@ -104,6 +104,7 @@ public class KendaraanController {
             } else {
                 JOptionPane.showMessageDialog(null, "Data gagal ditambah!");
             }
+            
         });
     }
 

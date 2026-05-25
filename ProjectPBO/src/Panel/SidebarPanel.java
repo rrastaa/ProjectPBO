@@ -5,6 +5,9 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 public class SidebarPanel extends JPanel {
 
     JButton dashboardBtn;
@@ -125,16 +128,30 @@ public class SidebarPanel extends JPanel {
 
         new Thread(() -> {
 
+            DateTimeFormatter formatterTanggal
+                    = DateTimeFormatter.ofPattern(
+                            "EEEE, dd MMMM yyyy",
+                            new Locale("id", "ID")
+                    );
+
             while (true) {
 
                 SwingUtilities.invokeLater(() -> {
 
+                    String tanggal
+                            = LocalDate.now()
+                                    .format(formatterTanggal);
+
+                    String jam
+                            = LocalTime.now()
+                                    .withNano(0)
+                                    .toString();
+
                     jamLabel.setText(
                             "<html><center>"
-                            + LocalDate.now()
+                            + tanggal
                             + "<br>"
-                            + LocalTime.now()
-                                    .withNano(0)
+                            + jam
                             + "</center></html>"
                     );
                 });

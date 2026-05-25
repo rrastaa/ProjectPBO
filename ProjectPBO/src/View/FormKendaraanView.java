@@ -125,6 +125,7 @@ public class FormKendaraanView extends JFrame {
         });
 
         new KendaraanController(this);
+        
 
         setVisible(true);
     }

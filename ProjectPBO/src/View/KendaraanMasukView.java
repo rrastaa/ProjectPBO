@@ -1,6 +1,7 @@
 package View;
 
 import Controller.KendaraanController;
+import Controller.LoginController;
 import Model.Kendaraan;
 import Panel.SidebarPanel;
 import Panel.HeaderPanel;
@@ -41,7 +42,6 @@ public class KendaraanMasukView extends JFrame {
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        
         JPanel mainPanel = new JPanel(
                 new BorderLayout()
         );
@@ -49,13 +49,11 @@ public class KendaraanMasukView extends JFrame {
 //        mainPanel.setBorder(
 //                new EmptyBorder(15, 15, 15, 15)
 //        );
-
         mainPanel.setBackground(
                 new Color(240, 240, 240)
         );
 
-        
-        HeaderPanel header = new HeaderPanel("Data Parkir",username);
+        HeaderPanel header = new HeaderPanel("Data Parkir", username);
 
         SidebarPanel sidebar = new SidebarPanel();
 
@@ -80,34 +78,33 @@ public class KendaraanMasukView extends JFrame {
         });
 
         sidebar.getLogoutBtn().addActionListener(e -> {
-            
+
             int confirm
-                        = JOptionPane.showConfirmDialog(
-                                null,
-                                "Log out?",
-                                "Konfirmasi",
-                                JOptionPane.YES_NO_OPTION
-                        );
-
-                if (confirm == JOptionPane.YES_OPTION) {
-
-
-
-                    JOptionPane.showMessageDialog(
+                    = JOptionPane.showConfirmDialog(
                             null,
-                            "Berhasil Log out!"
+                            "Log out?",
+                            "Konfirmasi",
+                            JOptionPane.YES_NO_OPTION
                     );
-                }
-            dispose();
 
-            new LoginView();
+            if (confirm == JOptionPane.YES_OPTION) {
+
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Berhasil Log out"
+                );
+                dispose();
+                LoginView view = new LoginView();
+                new LoginController(view);
+            }
+
         });
-        
+
         JPanel centerPanel = new JPanel(
                 new BorderLayout(20, 20)
         );
-        
-                centerPanel.setBorder(
+
+        centerPanel.setBorder(
                 new EmptyBorder(20, 20, 20, 20)
         );
 
@@ -263,7 +260,6 @@ public class KendaraanMasukView extends JFrame {
         add(mainPanel);
 
         btnTambah.addActionListener(e -> {
-
             new FormKendaraanView(this,
                     "Tambah");
         });
@@ -296,7 +292,7 @@ public class KendaraanMasukView extends JFrame {
                         slot
                 );
             }
-            
+
         });
 
         btnHapus.addActionListener(e -> {

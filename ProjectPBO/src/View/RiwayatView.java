@@ -1,5 +1,6 @@
 package View;
 
+import Controller.LoginController;
 import Controller.RiwayatKendaraanController;
 import Model.Kendaraan;
 import Panel.HeaderPanel;
@@ -71,6 +72,7 @@ public class RiwayatView extends JFrame {
         });
 
         sidebar.getLogoutBtn().addActionListener(e -> {
+
             int confirm
                     = JOptionPane.showConfirmDialog(
                             null,
@@ -83,12 +85,13 @@ public class RiwayatView extends JFrame {
 
                 JOptionPane.showMessageDialog(
                         null,
-                        "Berhasil Log out!"
+                        "Berhasil Log out"
                 );
+                dispose();
+                LoginView view = new LoginView();
+                new LoginController(view);
             }
-            dispose();
 
-            new LoginView();
         });
 
         JPanel centerPanel = new JPanel(

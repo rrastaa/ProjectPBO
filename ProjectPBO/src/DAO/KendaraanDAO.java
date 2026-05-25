@@ -374,7 +374,8 @@ public class KendaraanDAO {
                 + "JOIN kendaraan k ON p.id_kendaraan = k.id_kendaraan "
                 + "JOIN slot_parkir s ON p.id_slot = s.id_slot "
                 + "WHERE (k.plat_nomor LIKE ? OR s.nomor_slot LIKE ?) "
-                + "AND s.status_slot = 'Terisi'";
+                + "AND s.status_slot = 'Terisi'"
+                + "AND p.waktu_keluar IS NULL";
 
         try {
 
@@ -461,7 +462,9 @@ public class KendaraanDAO {
                 + "ON p.id_kendaraan = k.id_kendaraan "
                 + "JOIN slot_parkir s "
                 + "ON p.id_slot = s.id_slot "
-                + "WHERE s.status_slot = 'Terisi'";
+                + "WHERE s.status_slot = 'Terisi'"
+                + "AND p.waktu_keluar IS NULL";
+        
 
         try {
 

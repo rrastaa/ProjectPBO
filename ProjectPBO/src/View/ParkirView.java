@@ -1,5 +1,6 @@
 package View;
 
+import Controller.LoginController;
 import Panel.SidebarPanel;
 import Controller.ParkirController;
 import Model.SlotParkir;
@@ -55,6 +56,7 @@ public class ParkirView extends JFrame {
         });
 
         sidebar.getLogoutBtn().addActionListener(e -> {
+
             int confirm
                     = JOptionPane.showConfirmDialog(
                             null,
@@ -67,12 +69,13 @@ public class ParkirView extends JFrame {
 
                 JOptionPane.showMessageDialog(
                         null,
-                        "Berhasil Log out!"
+                        "Berhasil Log out"
                 );
+                dispose();
+                LoginView view = new LoginView();
+                new LoginController(view);
             }
-            dispose();
 
-            new LoginView();
         });
 
         JPanel centerPanel = new JPanel(
